@@ -147,6 +147,7 @@ footer .foot-links a {
     width: 500px !important;
     height: 200px !important;
   }
+  
 }
 @media only screen and (min-width: 768px) and (max-device-width: 1000px) {
   .payCard {
@@ -166,6 +167,9 @@ footer .foot-links a {
 @media only screen and (min-width: 768px) {
   .payCard {
     width: 600px;
+  }
+  .sm-user-account{
+    width: 75% !important;
   }
 }
 .a-row {

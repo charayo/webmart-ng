@@ -1,3 +1,7 @@
+<?php
+include('db-querier.php');
+    // session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -105,13 +109,15 @@
         <div class="px-5 container">
             <div class="a-row container card-deck mx-auto p-5">
                 <?php
-                include('db-querier.php');
+                
                 $data = new Access;
-
+                
                 $products = $data->fetch();
                 $count = 0;
                 for ($i = 0; $i < count($products); $i++) {
-                    if($products[$i]['flash_sales']=='true'){
+                    if ($products[$i]['flash_sales'] == 'true') {
+                        $costPrice = $data->CurrencyFormat($products[$i]['product_cost_price']);
+                        $salesPrice = $data->CurrencyFormat($products[$i]['product_sales_price']);
                         echo '
                             <div class="card text-center shadow mx-auto">
                                 <div class="w-50 border-none text-center mx-auto">
@@ -121,18 +127,18 @@
                                 </div>    
                                 <div class="card-body">
                                     <h5 class="card-title"> ' . $products[$i]['product_name'] . ' </h5>
-                                    <del class="card-text text-mute">₦' . $products[$i]['product_cost_price'] . '</del>
-                                    <p class="card-text text-danger">₦' . $products[$i]['product_sales_price'] . '</p>
+                                    <del class="card-text text-mute">₦' . $costPrice . '</del>
+                                    <p class="card-text text-danger">₦' . $salesPrice . '</p>
                                 </div>
                                 <div class="card-footer bg-transparent border-light">
-                                    <a href="product-page.php?id='.$products[$i]["id"].'" class="btn btn-danger checkBtn" id=" '.$products[$i]['id'].'">Check</a>
+                                    <a href="product-page.php?id=' . $products[$i]["id"] . '" class="btn btn-danger checkBtn" id=" ' . $products[$i]['id'] . '">Check</a>
                                     
                                 </div>
                             </div>
                         ';
                         $count++;
                     }
-                    if($count==3){
+                    if ($count == 3) {
                         break;
                     }
                 }
@@ -146,7 +152,7 @@
     </div>
     <hr>
     <!-- categories section -->
-    <div class=" m-5" >
+    <div class=" m-5">
         <div class="text-center" style="padding: 0;">
             <h2 class="text-danger">Categories</h2>
         </div>
@@ -178,7 +184,7 @@
             <div class="col-md-6" style="padding: 0px;">
                 <div class="row con">
                     <div class="col-8  float-right" style="padding: 0;">
-                        <a href="phones&tablets.html"><img class="w-100" src="images/front-phones.jpg" alt=""></a>                        
+                        <a href="phones&tablets.html"><img class="w-100" src="images/front-phones.jpg" alt=""></a>
                     </div>
                     <div class="col-4 float-left" style="padding: 0;">
                         <a href="phones&tablets.html"><img class="w-100" src="images/front-phone-cases.jpg" alt=""></a>
@@ -210,7 +216,7 @@
                 <?php
                 $count = 0;
                 for ($i = 0; $i < count($products); $i++) {
-                    if($products[$i]['trending']=='true'){
+                    if ($products[$i]['trending'] == 'true') {
                         echo '
                             <div class="card text-center shadow mx-auto">
                                 <div class="w-50 border-none text-center mx-auto">
@@ -224,14 +230,14 @@
                                     <p class="card-text text-danger">₦' . $products[$i]['product_sales_price'] . '</p>
                                 </div>
                                 <div class="card-footer bg-transparent border-light">
-                                    <a href="product-page.php?id='.$products[$i]["id"].'" class="btn btn-danger checkBtn" id=" '.$products[$i]['id'].'">Check</a>
+                                    <a href="product-page.php?id=' . $products[$i]["id"] . '" class="btn btn-danger checkBtn" id=" ' . $products[$i]['id'] . '">Check</a>
                                     
                                 </div>
                             </div>
                         ';
                         $count++;
                     }
-                    if($count==3){
+                    if ($count == 3) {
                         break;
                     }
                 }
@@ -259,20 +265,7 @@
                 });
             });
 
-            // let salesPrice, costPrice, imageSrc, productName;
-            // let getProductBtn = () => {
-            //     let objOfProducts = {
-            //         salesPrice: salesPrice,
-            //         costPrice: costPrice,
-            //         product: productName,
-            //         imgUrl: imageSrc,
-            //     }
-            //     // localStorage.setItem('products', JSON.stringify(objOfProducts));
-            //     console.log(objOfProducts);
-            //     window.location.href = '/webmart-ng/product-page.php';
-            // }
-            // console.log('index');
-            
+
         })(jQuery)
     </script>
     <!-- <script src="./main.js"></script> -->

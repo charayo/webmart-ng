@@ -1,3 +1,6 @@
+<?php
+    include('db-querier.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,7 +29,7 @@
         <div class="px-5 container">
             <div class="a-row container card-deck mx-auto p-5">
                 <?php
-                include('db-querier.php');
+                
                 $data = new Access;
 
                 $products = $data->fetch();
