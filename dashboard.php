@@ -63,6 +63,7 @@ include('db-querier.php');
                                 <option value="women">Women</option>
                                 <option value="phones/tablet">Phones-tablet</option>
                                 <option value="kids">Kids</option>
+                                <option value="kids">Kids</option>
                                 <option value="electronics">Electronics</option>
                             </select>
                             <div class="form-row">
@@ -207,8 +208,13 @@ include('db-querier.php');
                     let trendingUp = $(e.target).parent().prev().html();
                     if(flashsaleUp=='true'){
                         $('#editFlash').attr('checked', true);
-                    }else if(trendingUp=='true'){
+                    }else{
+                        $('#editFlash').attr('checked', false);
+                    }
+                    if(trendingUp=='true'){
                         $('#editTrend').attr('checked', true);
+                    }else{
+                        $('#editTrend').attr('checked', false);
                     }
                     $('#myModal').modal('show');
                 }

@@ -1,6 +1,6 @@
 <?php
-if(!session_start()){
-session_start();
+if (!session_start()) {
+    session_start();
 }
 class Access
 {
@@ -19,7 +19,7 @@ class Access
             // echo "successful";
         }
     }
-   
+
     public function adminSignup($username, $email, $password)
     {
         $sql = "INSERT into admins (username,password,email) values('$username', '$password','$email')";
@@ -39,6 +39,11 @@ class Access
             $user = $verify->fetch_assoc();
             $_SESSION['presentUser'] = $user['username'];
             $_SESSION['userId'] = $user['id'];
+            $_SESSION['userDetails'] = [
+                'username' =>  $user['username'],
+                'userId' => $user['id'],
+                'userEmail' => $user['email'],
+            ];
             $_SESSION['logged'] = true;
             // echo $user['username'];
             // echo $_SESSION['presentUser'];
@@ -48,6 +53,15 @@ class Access
             echo "Not Found";
         }
         $this->conn->close();
+    }
+    public function signOut()
+    {
+        // unset($_SESSION['presentUser']);
+        // unset($_SESSION['userId']);
+        // unset($_SESSION['logged']);
+        // unset($_SESSION['cart']);
+        session_destroy();
+        echo "logged out";
     }
     public function signup($username, $email, $password)
     {
@@ -74,7 +88,7 @@ class Access
         return $products;
         $this->conn->close();
     }
-    
+
     public function loadProdDet($id)
     {
         $sql = "SELECT * from products where id = '$id'";
@@ -87,23 +101,33 @@ class Access
         return $data;
         $this->conn->close();
     }
-    public function loadCart(){
-        $sql = "SELECT  * from products p  JOIN cart c On c.product_id = p.id";
+    public function loadCart($userId)
+    {
+        $sql = "SELECT  * from products p  JOIN cart c On c.product_id = p.id WHERE c.user_id = '$userId'";
         $cart = $this->conn->query($sql);
-        if ($cart){
+        if ($cart) {
             $cartItems = [];
             while ($data = $cart->fetch_assoc()) {
-            $cartItems[] = $data;
-             }
-             return $cartItems;
-             $this->conn->close();
-            // echo 'cart retrieved';
-            // $cartItems = $cart->fetch_all();
-            // return $cartItems;
+                $cartItems[] = $data;
+            }
+            return $cartItems;
         }
-        
+
         $this->conn->close();
-        // $sql = "SELECT * from cart where user_id = '$id'";
+    }
+    public function loadOrder($userId)
+    {
+        $sql = "SELECT  * from products p  JOIN myorder o On o.product_id = p.id WHERE o.user_id = '$userId'";
+        $check = $this->conn->query($sql);
+        if ($check) {
+            $orderList = [];
+            while ($data = $check->fetch_assoc()) {
+                $orderList[] = $data;
+            }
+            return $orderList;
+        }
+
+        $this->conn->close();
     }
     public function addProduct($productName, $productPrice, $salesPrice, $status, $productImg, $productCate, $productDescr, $flashsale, $trending)
     {
@@ -120,14 +144,36 @@ class Access
         }
         $this->conn->close();
     }
-    public function addToCart($productId, $quantity, $price){
-        $sql = "INSERT into cart (product_id,quantity,price) VALUES ('$productId','$quantity','$price')";
+    public function addToCart($productId, $userId, $quantity, $price)
+    {
+        $sql = "INSERT into cart (product_id,user_id,quantity,price) VALUES ('$productId','$userId','$quantity','$price')";
         $add = $this->conn->query($sql);
-        if($add){
+        if ($add) {
             // echo 'success';
             // header('location: cart.php');
-        }else{
+        } else {
             echo 'failed to add to cart';
+        }
+    }
+    public function updatePayment($userId, $ref, $amount)
+    {
+        $sql = "INSERT INTO payment_history (user_id,payment_ref,amount) VALUES ('$userId','$ref','$amount')";
+        $add = $this->conn->query($sql);
+        if ($add) {
+            echo 'success';
+        } else {
+            echo 'failed';
+        }
+    }
+    public function pushOrder($productId, $userId, $quantity, $price)
+    {
+        $sql = "INSERT into myorder (product_id,user_id,quantity,price) VALUES ('$productId','$userId','$quantity','$price')";
+        $add = $this->conn->query($sql);
+        if ($add) {
+            // echo 'success';
+            // header('location: cart.php');
+        } else {
+            echo 'failed to push order';
         }
     }
     public function deleteProduct($id)
@@ -154,9 +200,9 @@ class Access
         }
         $this->conn->close();
     }
-    public function updateCart($id, $qty)
+    public function updateCart($id, $qty, $userId)
     {
-        $sql = "UPDATE cart set quantity = '$qty' WHERE product_id = '$id'";
+        $sql = "UPDATE cart set quantity = '$qty' WHERE product_id = '$id' AND user_id = '$userId'";
         $done = $this->conn->query($sql);
         if ($done) {
             header('location:cart.php');
@@ -165,9 +211,9 @@ class Access
         }
         $this->conn->close();
     }
-    public function deleteProductFromCart($id)
+    public function deleteProductFromCart($id, $userId)
     {
-        $sql = "DELETE from cart where product_id ='$id'";
+        $sql = "DELETE from cart where product_id ='$id' AND user_id = '$userId'";
         $deleted = $this->conn->query($sql);
         if ($deleted) {
             echo "product removed from cart";
@@ -177,10 +223,12 @@ class Access
         }
         $this->conn->close();
     }
-    public function CurrencyFormat($number){
+
+    public function CurrencyFormat($number)
+    {
         $decimalPlaces = 0;
         $decimalChar = '.';
         $thousandSeparator = ',';
-        return number_format($number, $decimalPlaces,$decimalChar,$thousandSeparator);
+        return number_format($number, $decimalPlaces, $decimalChar, $thousandSeparator);
     }
 }

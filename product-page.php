@@ -36,34 +36,34 @@ include('db-querier.php');
     }
 
     $data = new Access;
-    $cartItems = $data->loadCart();
+
     $products = $data->fetch();
-    // $qty = 2;
     $carted = false;
-    for ($count = 0; $count < count($cartItems); $count++) {
-        if ($cartItems[$count]['product_id'] == $theID) {
-            $carted = true;
-            $qty = $cartItems[$count]['quantity'];
+    if (isset($_SESSION['userId'])) {
+        $cartItems = $data->loadCart($_SESSION['userId']);
+        for ($count = 0; $count < count($cartItems); $count++) {
+            if ($cartItems[$count]['product_id'] == $theID) {
+                $carted = true;
+                $qty = $cartItems[$count]['quantity'];
+            }
+        }
+    } else if (isset($_SESSION['tempCart'])) {
+        $tempCart = $_SESSION['tempCart'];
+        for ($count = 0; $count < count($tempCart); $count++) {
+            if ($tempCart[$count]->productId == $theID) {
+                $carted = true;
+                $qty = $tempCart[$count]->quantity;
+            }
         }
     }
-    // if($_SESSION['cart']){
-    //     // $cart = $_SESSION['cart'];
-    //     // for($i = 0; $i < count($cart); $i++){
-    //     //     if($cart[$i]['product_id']==$theID){
-    //     //         $GLOBALS['qty'] = $cart['quantity'];
-    //     //     }
-    //     // }
-    // }
     for ($i = 0; $i < count($products); $i++) {
         if ($products[$i]['id'] == $theID) {
             $discount = (($products[$i]['product_cost_price'] - $products[$i]['product_sales_price']) / $products[$i]['product_cost_price']) * 100;
             $discount = round($discount);
             $costPrice = $data->CurrencyFormat($products[$i]['product_cost_price']);
             $salesPrice = $data->CurrencyFormat($products[$i]['product_sales_price']);
-            // $product = $products[$i
-            for ($c = 0; $c < count($_SESSION['clicked']); $c++) {
-                if (!$carted) {
-                    echo '
+            if (!$carted) {
+                echo '
                         <div class="nav p-2" id="path-link">
                             <span class="mr-3"><a class="text-black path-link" href="index.php">Home</a><span class="ml-1 myIcon">>></span></span>
                             <span class="mr-3"><a class="text-black path-link" href="' . $products[$i]['product_category'] . '.php">' . $products[$i]['product_category'] . '</a><span class="ml-1 myIcon">>></span></span>
@@ -92,8 +92,8 @@ include('db-querier.php');
                             <p class="" id="product-details">' . $products[$i]['product_description'] . '</p>
                         </div>            
                 ';
-                } else {
-                    echo '
+            } else {
+                echo '
                     <div class="nav p-2" id="path-link">
                         <span class="mr-3"><a class="text-black path-link" href="index.php">Home</a><span class="ml-1 myIcon">>></span></span>
                         <span class="mr-3"><a class="text-black path-link" href="' . $products[$i]['product_category'] . '.php">' . $products[$i]['product_category'] . '</a><span class="ml-1 myIcon">>></span></span>
@@ -112,7 +112,7 @@ include('db-querier.php');
                                 <span><del id="slashPrice">₦' . $costPrice . '</del></span><span class="bg-warning ml-1">-' . $discount . '%</span>
                                 <hr>
                                 <div id="cartCtrl" class="mt-2">
-                                    <button id="' . $products[$i]['id'] . '" disabled class="btn btn-default minusBtn border mr-1 mybg ">&minus;</button><span id="itemNum" class="border pt-1 pr-2 pl-2 pb-2 mt-3 rounded font-weight-bold">'. $qty .'  </span><button id="' . $products[$i]['id'] . '" class="btn btn-default border ml-1 mybg plusBtn">&plus;</button>
+                                    <button id="' . $products[$i]['id'] . '" disabled class="btn btn-default minusBtn border mr-1 mybg ">&minus;</button><span id="itemNum" class="border pt-1 pr-2 pl-2 pb-2 mt-3 rounded font-weight-bold">' . $qty . '  </span><button id="' . $products[$i]['id'] . '" class="btn btn-default border ml-1 mybg plusBtn">&plus;</button>
                                     <div class="d-none" name="" id="theCodeName">codename</div>
                                 </div>
                             </div>
@@ -124,7 +124,6 @@ include('db-querier.php');
                     </div>
             
             ';
-                }
             }
         }
     }
@@ -151,7 +150,7 @@ include('db-querier.php');
                 })
 
             })
-            if($('#itemNum').html()>1){
+            if ($('#itemNum').html() > 1) {
                 $('.minusBtn').attr('disabled', false)
             }
             $('.plusBtn').on('click', (e) => {
@@ -160,8 +159,8 @@ include('db-querier.php');
                 Qty = Number(Qty);
                 Qty++;
                 let data = {
-                    qty:Qty,
-                    pId:prodId
+                    qty: Qty,
+                    pId: prodId
                 }
                 console.log(Qty);
                 $.get('cart-process.php', {
@@ -179,8 +178,8 @@ include('db-querier.php');
                 Qty = Number(Qty);
                 Qty--;
                 let data = {
-                    qty:Qty,
-                    pId:prodId
+                    qty: Qty,
+                    pId: prodId
                 }
                 console.log(Qty);
                 $.get('cart-process.php', {

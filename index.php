@@ -31,36 +31,7 @@ include('db-querier.php');
     include("topbar.php");
     ?>
 
-    <!-- my login modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content bg-dark card shadow text-white">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Welcome Back!</h4>
-                    <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <input type="text" class="form-control mb-2" placeholder="username here" required id="userIdInp">
-                    <input type="password" class="form-control mb-2" placeholder="password" required id="passInp">
-                    <label>
-                        <input type="checkbox" checked="checked" name="remember" id="remMe">
-                        Remember me <a href="forgot-pass.html" style="text-decoration: none;" id="fgtPass"><small> Forgot Password</small></a><a style="text-decoration: none;" href="signup.html"><small> or sign up</small></a>
-                    </label>
-                    <input type="button" class="btn mybg text-white mt-1 d-block" value="LOGIN" id="loginBtn">
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
+    
     <!-- carousel -->
     <div id="demo" class="carousel slide text-center" data-ride="carousel">
 
@@ -160,22 +131,22 @@ include('db-querier.php');
             <div class="col-md-6 " style="padding: 0px;">
                 <div class="row">
                     <div class="col-8  float-right" style="padding: 0;">
-                        <a href="women.html"><img class="w-100" src="images/front-women-clothing.jpg" alt=""></a>
+                        <a href="women.php"><img class="w-100" src="images/front-women-clothing.jpg" alt=""></a>
                     </div>
                     <div class="col-4 float-left" style="padding: 0;">
-                        <a href=""><img class="w-100" src="images/front-women-shoes.jpg" alt=""></a>
-                        <a href="bags-category.html"><img class="w-100" src="images/front-women-bags.jpg" alt=""></a>
+                        <a href="women.php"><img class="w-100" src="images/front-women-shoes.jpg" alt=""></a>
+                        <a href="women.php"><img class="w-100" src="images/front-women-bags.jpg" alt=""></a>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 " style="padding: 0px;">
                 <div class="row">
                     <div class="col-8  float-right" style="padding: 0;">
-                        <a href=""><img class="w-100" src="images/front-men-clothing.jpg" alt=""></a>
+                        <a href="men.php"><img class="w-100" src="images/front-men-clothing.jpg" alt=""></a>
                     </div>
                     <div class="col-4 float-left" style="padding: 0;">
-                        <a href=""><img class="w-100" src="images/front-men-shoes.jpg" alt=""></a>
-                        <a href=""><img class="w-100" src="images/front-men-accessories.jpg" alt=""></a>
+                        <a href="men.php"><img class="w-100" src="images/front-men-shoes.jpg" alt=""></a>
+                        <a href="men.php"><img class="w-100" src="images/front-men-accessories.jpg" alt=""></a>
                     </div>
                 </div>
             </div>
