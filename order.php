@@ -12,19 +12,20 @@ include('db-querier.php');
     <title>Web-mart Nigeria</title>
     <?php
     include('head-meta.php');
-    
+
     ?>
 </head>
 
 <body>
     <?php
     include('topbar.php');
-    
+
     $data = new Access();
-    $orderList =  $data->loadOrder($_SESSION['userDetails']['userId']);
-    for ($i = 0; $i < count($orderList); $i++) {
-        $price = $data->CurrencyFormat($orderList[$i]['price']);
-        echo '
+    if ($_SESSION['userDetails'] && $_SESSION['logged'] == true) {
+        $orderList =  $data->loadOrder($_SESSION['userDetails']['userId']);
+        for ($i = 0; $i < count($orderList); $i++) {
+            $price = $data->CurrencyFormat($orderList[$i]['price']);
+            echo '
         <div class="container card mt-2 mb-3 shadow-sm w-50" id="cartCard${index}">
             <div class="row mb-2 text-center">
                 <div class="col-md-4 text-cen" id="imageTarget">
@@ -35,15 +36,17 @@ include('db-querier.php');
                         <h4 class="">' . $orderList[$i]['product_name'] . '</h4>
                         <p class="">₦' . $price . ' per unit</p>
                         <hr>
-                        <strong>Quantity: '.$orderList[$i]['quantity'].'</strong><br>
+                        <strong>Quantity: ' . $orderList[$i]['quantity'] . '</strong><br>
                         <span hidden>' . $orderList[$i]['product_id'] . '</span>
-                        <small>Date: '. $orderList[$i]['order_date'] .'</small>                         
+                        <small>Date: ' . $orderList[$i]['order_date'] . '</small>                         
                     </div>                                
                 </div>
             </div>
         </div>
         ';
+        }
     }
+
     ?>
 
 </body>

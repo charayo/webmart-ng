@@ -98,7 +98,7 @@ include('db-querier.php');
         </div>
     </div>
 
-    <form class="" action="/webmart-ng/products-files.php" method="post" enctype="multipart/form-data">
+    <form class="" action="/projects/webmart-ng/products-files.php" method="post" enctype="multipart/form-data">
 
         <div class="container mt-3 p-5 card">
             <div class="form-group">

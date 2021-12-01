@@ -139,8 +139,21 @@ class Access
             echo "success";
             header("location: dashboard.php");
         } else {
-            echo $this->conn->connect_error;
+            // echo $this->conn->connect_error;
             echo "Something went wrong!";
+            // $data = [
+            //     "name"=>$productName,
+            //     "cost"=>$productPrice,
+            //     "sales"=>$salesPrice,
+            //     "status"=>$status,
+            //     "img"=>$productImg,
+            //     "category"=> $productCate, 
+            //     "descr"=>$productDescr,
+            //     "flashasale"=> $flashsale,
+            //     "trend"=> $trending
+
+            // ];
+            // echo json_encode($data);
         }
         $this->conn->close();
     }
