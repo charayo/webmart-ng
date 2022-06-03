@@ -163,7 +163,12 @@ footer .foot-links a {
     display: inline;
     /* float: right; */
   }
+  .org-header{
+    display: block;
+  }
+  
 }
+
 @media only screen and (min-width: 768px) {
   .payCard {
     width: 600px;
@@ -171,7 +176,12 @@ footer .foot-links a {
   .sm-user-account{
     width: 75% !important;
   }
+  .org-header{
+    display: block;
+  }
+  
 }
+
 .a-row {
   display: grid;
   grid-template-columns: auto auto auto;
